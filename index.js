@@ -7,7 +7,7 @@ var app = express();
 app.set('port', process.env.PORT || 3000);
 
 app.get('/users/:name', function(req, res){
-  var url = 'https://www.freecodecamp.com/user512';
+  var url = 'https://www.freecodecamp.com/' + req.params.name;
 
   request(url, function(error, response, body) {
     if (!error && response.statusCode == 200) {
