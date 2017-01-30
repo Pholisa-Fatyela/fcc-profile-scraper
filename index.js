@@ -6,16 +6,16 @@ var app = express();
 
 app.set('port', process.env.PORT || 3000);
 
-app.get('/users/:name', function(req, res){
+app.get('/user/:name', function(req, res){
   var url = 'https://www.freecodecamp.com/' + req.params.name;
 
   request(url, function(error, response, body) {
     if (!error && response.statusCode == 200) {
       var $ = cheerio.load(body);
-      var name, location, longestStreak, currentStreak, challenges;
+      var name, profileImage, location, longestStreak, currentStreak, completedChallenges;
 
       var json = { name : "", profileImage: "", location : "", longestStreak : "", currentStreak : "",
-                   challenges : "" };
+                   completedChallenges : [] };
 
       $('.public-profile-img').filter(function(){
         var data = $(this);
