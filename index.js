@@ -20,7 +20,7 @@ app.get('/users/:name', function(req, res){
       $('.public-profile-img').filter(function(){
         var data = $(this);
 
-        profileImage = data[0].src
+        profileImage = data[0].attribs.src;
         name = data.next().next().text();
         location = data.parent().find('.flat-top.wrappable').slice(1).text();
 
