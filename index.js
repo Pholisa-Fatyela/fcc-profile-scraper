@@ -12,11 +12,12 @@ app.get('/user/:name', function(req, res){
   request(url, function(error, response, body) {
     if (!error && response.statusCode == 200) {
       var $ = cheerio.load(body);
-      var name, profileImage, location, longestStreak, currentStreak, completedChallenges;
+      var name, profileImage, location, completedChallenges;
 
-      var json = { name : "", profileImage: "", location : "", longestStreak : "", currentStreak : "",
-                   completedChallenges : [] };
+      var json = { name : "", profileImage: "", location : "", completedChallenges : [] };
 
+      // FIXME: Need to scrape challneges link
+      // completedChallenges: [{title: title1, link: link1}, {title: title2, link: link2}]
       $('.public-profile-img').filter(function(){
         var data = $(this);
 
@@ -27,6 +28,10 @@ app.get('/user/:name', function(req, res){
         json.name = name;
         json.profileImage = profileImage;
         json.location = location;
+      })
+
+      $('.col-xs-5.hidden-xs').each(function(i, element){
+        json.completedChallenges.push({title: $(this).text()})
       })
 
       res.setHeader('content-type', 'application/json');
