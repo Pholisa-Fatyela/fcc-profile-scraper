@@ -16,8 +16,6 @@ app.get('/user/:name', function(req, res){
 
       var json = { name : "", profileImage: "", location : "", completedChallenges : [] };
 
-      // FIXME: Need to scrape challneges link
-      // completedChallenges: [{title: title1, link: link1}, {title: title2, link: link2}]
       $('.public-profile-img').filter(function(){
         var data = $(this);
 
@@ -30,9 +28,22 @@ app.get('/user/:name', function(req, res){
         json.location = location;
       })
 
-      $('.col-xs-5.hidden-xs').each(function(i, element){
-        json.completedChallenges.push({title: $(this).text()})
+      // FIXME: Filter from tbody tr
+      $('tr').filter(function(i, element){
+        // FIXME: Can remove 34 - 36 if filter from tbody tr
+        if( i === 0) {
+          return true;
+        }
+        var base_url = 'https://www.freecodecamp.com'
+        json.completedChallenges.push(
+                                       {
+                                         title: $(this).children().first().text(),
+                                         url: base_url + $(this).children().find('a').attr('href')
+                                       }
+                                      )
       })
+
+      // json.completedChallenges.push({url: $('a').attr('href')});
 
       res.setHeader('content-type', 'application/json');
       res.send(JSON.stringify(json, null, 3));
