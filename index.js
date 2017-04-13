@@ -38,6 +38,8 @@ app.get('/user/:name', function(req, res){
         json.completedChallenges.push(
                                        {
                                          title: $(this).children().first().text(),
+                                         completed_at: $(this).children().eq(1).text(),
+                                         updated_at: $(this).children().eq(2).text(),
                                          url: base_url + $(this).children().find('a').attr('href')
                                        }
                                       )
