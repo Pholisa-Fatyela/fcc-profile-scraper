@@ -53,6 +53,37 @@ app.get('/user/:name', function(req, res){
   });
 });
 
+app.get('/challenge/:name', function(req, res){
+  var url = 'https://www.freecodecamp.com/challenges/' + req.params.name;
+
+  request(url, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var $ = cheerio.load(body);
+      var title, instructions;
+
+      var json = { title: "", instructions: [] };
+
+      $(".challenge-instructions-title").filter(function(){
+        var data = $(this);
+        var title = data.text();
+
+        json.title = title;
+      })
+
+      $(".challenge-instructions").filter(function(){
+        var data = $(this);
+
+        data.each(function(i) {
+          json.instructions.push($(this).text());
+        })
+      })
+
+      res.setHeader('content-type', 'application/json');
+      res.send(JSON.stringify(json, null, 3));
+    }
+  })
+});
+
 app.listen(app.get('port'), function(){
   console.log('Express start press Ctrl-C to terminate');
 });
