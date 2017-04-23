@@ -61,7 +61,7 @@ app.get('/challenge/:name', function(req, res){
       var $ = cheerio.load(body);
       var title, instructions;
 
-      var json = { title: "", instructions: [] };
+      var json = { title: "", instructions: "" };
 
       $(".challenge-instructions-title").filter(function(){
         var data = $(this);
@@ -74,7 +74,7 @@ app.get('/challenge/:name', function(req, res){
         var data = $(this);
 
         data.each(function(i) {
-          json.instructions.push($(this).text());
+          json.instructions = json.instructions + $(this).text();
         })
       })
 
