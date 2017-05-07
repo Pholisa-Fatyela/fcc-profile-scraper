@@ -28,9 +28,15 @@ app.get('/user/:name', function(req, res){
         json.location = location;
       })
 
+      if (json.profileImage === '') {
+        json = {error : "Bad user name"};
+        res.setHeader('content-type', 'application/json');
+        return res.status(404).send(JSON.stringify(json));
+      }
+
       // FIXME: Filter from tbody tr
       $('tr').filter(function(i, element){
-        // FIXME: Can remove 34 - 36 if filter from tbody tr
+        // FIXME: Can remove 40 - 42 if filter from tbody tr
         if( i === 0) {
           return true;
         }
