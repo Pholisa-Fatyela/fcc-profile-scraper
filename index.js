@@ -34,13 +34,13 @@ app.get('/user/:name', function(req, res){
         return res.status(404).send(JSON.stringify(json));
       }
 
-      // FIXME: Filter from tbody tr
       $('tr').filter(function(i, element){
-        // FIXME: Can remove 40 - 42 if filter from tbody tr
-        if( i === 0) {
+        var completed_at = Date.parse($(this).children().eq(1).text())
+        if (isNaN(completed_at)) {
           return true;
         }
         var base_url = 'https://www.freecodecamp.com'
+
         json.completedChallenges.push(
                                        {
                                          title: $(this).children().first().text(),
@@ -50,8 +50,6 @@ app.get('/user/:name', function(req, res){
                                        }
                                       )
       })
-
-      // json.completedChallenges.push({url: $('a').attr('href')});
 
       res.setHeader('content-type', 'application/json');
       res.send(JSON.stringify(json, null, 3));
